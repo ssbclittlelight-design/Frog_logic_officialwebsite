@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;900&family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;900&family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
         
         body { 
             font-family: 'Outfit', sans-serif; 
@@ -26,19 +26,24 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Pure CSS Digital Certificate */
+        /* Certificate Styling to match IMG_1481 */
         .digital-cert {
-            background: #fffdfa;
-            color: #1a1a1a;
-            padding: 2.5rem 1.5rem;
-            border: 10px double #c5a059;
+            background: #ffffff;
+            color: #000000;
+            padding: 3rem 2rem;
+            border: 1px solid #e5e5e5;
             position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            max-width: 500px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            max-width: 600px;
             margin: 0 auto;
+            text-align: center;
         }
-        .cert-title { font-family: 'Playfair Display', serif; letter-spacing: 2px; }
-        .cert-script { font-family: 'Dancing Script', cursive; font-size: 2rem; border-bottom: 1px solid #999; display: inline-block; padding: 0 1rem; line-height: 1.2; }
+        .cert-header { font-family: 'EB Garamond', serif; letter-spacing: 3px; font-size: 0.8rem; font-weight: 500; color: #666; }
+        .cert-main-title { font-family: 'EB Garamond', serif; font-size: 4.5rem; line-height: 1; margin: 1rem 0 2.5rem 0; font-weight: 400; letter-spacing: 2px; }
+        .cert-body-text { font-family: 'EB Garamond', serif; font-size: 1.1rem; color: #333; margin-bottom: 2rem; line-height: 1.6; }
+        .cert-handwriting { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #000; display: inline-block; padding: 0 0.5rem; line-height: 0.8; }
+        .cert-line { border-bottom: 1px solid #000; display: inline-block; margin: 0 5px; }
+        .cert-footer-label { font-family: 'EB Garamond', serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; border-top: 1px solid #000; padding-top: 4px; display: inline-block; width: 100%; color: #000; }
 
         .frog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .game-cell { 
@@ -49,7 +54,6 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
         .active-frog { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.5); }
-        
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -106,7 +110,7 @@
                     <h1 className="text-5xl sm:text-6xl font-black mb-2 text-center bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
                         FROG<span className="text-green-500">LOGIC</span>
                     </h1>
-                    <p className="text-gray-400 text-lg mb-12 text-center font-light">The Logical Choice.</p>
+                    <p className="text-gray-400 text-lg mb-12 text-center font-light italic">"The Logical choice since 2007."</p>
                     <div className="flex flex-col gap-3 w-full max-w-xs">
                         <a href="https://youtube.com/@froglogicyt" target="_blank" className="bg-red-600 p-4 rounded-xl text-center font-bold shadow-lg active:scale-95 transition">YouTube</a>
                         <a href="https://discord.gg/jYyyTj6Ak" target="_blank" className="bg-indigo-600 p-4 rounded-xl text-center font-bold shadow-lg active:scale-95 transition">Discord</a>
@@ -115,7 +119,6 @@
             );
         }
 
-        // --- AI LOGIC ---
         async function getAILore(topic) {
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
@@ -123,12 +126,12 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: `Topic: ${topic}` }] }],
-                        systemInstruction: { parts: [{ text: "You are the FrogLogic Oracle. Write 2 paragraphs of logical lore about the community and Derpy Vandals. Be high-energy." }] }
+                        systemInstruction: { parts: [{ text: "You are the FrogLogic Oracle. Write 2 paragraphs of logical lore about the community and Derpy Vandals. Use a professional but energetic tone." }] }
                     })
                 });
                 const data = await res.json();
                 return data.candidates?.[0]?.content?.parts?.[0]?.text;
-            } catch (e) { return "The logic flow was interrupted. Try again."; }
+            } catch (e) { return "The logic flow was interrupted. Check your connection."; }
         }
 
         function Oracle() {
@@ -145,15 +148,16 @@
             };
 
             return (
-                <div className="animate-in fade-in slide-in-from-bottom-6 max-w-md mx-auto pb-10">
-                    <h2 className="text-3xl font-black text-center mb-6">AI ORACLE</h2>
+                <div className="animate-in fade-in slide-in-from-bottom-6 max-w-md mx-auto pb-10 text-center">
+                    <h2 className="text-3xl font-black mb-2 uppercase tracking-tighter">AI Oracle</h2>
+                    <p className="text-gray-500 text-xs mb-8 uppercase tracking-[0.2em]">Logical Knowledge Engine</p>
                     <div className="glass rounded-3xl p-6 mb-6">
-                        <input className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 mb-4 outline-none focus:border-green-500" placeholder="Ask for Lore..." value={query} onChange={e=>setQuery(e.target.value)} />
+                        <input className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 mb-4 outline-none focus:border-green-500 text-sm" placeholder="Ask for logical wisdom..." value={query} onChange={e=>setQuery(e.target.value)} />
                         <button onClick={handleAsk} disabled={loading} className="w-full bg-green-500 text-black font-black py-3 rounded-xl disabled:opacity-50">
-                            {loading ? "PROCESSING..." : "GENERATE LORE"}
+                            {loading ? "CALCULATING..." : "CONSULT ORACLE"}
                         </button>
                     </div>
-                    {result && <div className="glass rounded-3xl p-6 text-sm text-gray-300 leading-relaxed animate-in zoom-in-95">{result}</div>}
+                    {result && <div className="glass rounded-3xl p-6 text-sm text-gray-300 leading-relaxed text-left animate-in zoom-in-95">{result}</div>}
                 </div>
             );
         }
@@ -161,19 +165,38 @@
         function Vault() {
             return (
                 <div className="animate-in fade-in slide-in-from-bottom-6 pb-10">
-                    <h2 className="text-3xl font-black text-center mb-8 uppercase tracking-widest">The Vault</h2>
-                    <div className="digital-cert text-center rounded-sm">
-                        <h3 className="cert-title text-3xl font-bold mb-8">ADOPTION</h3>
-                        <div className="space-y-4">
-                            <p className="italic text-gray-600 text-sm">This certifies that</p>
-                            <span className="cert-script">FrogLogic</span>
-                            <p className="italic text-gray-600 text-sm">has officially adopted</p>
-                            <span className="cert-script text-2xl">"Derpy Vandals"</span>
+                    <div className="text-center mb-10">
+                        <h2 className="text-3xl font-black uppercase tracking-tighter">The Vault</h2>
+                        <p className="text-green-500 text-xs font-bold uppercase tracking-widest">Permanent Records</p>
+                    </div>
+                    
+                    <div className="digital-cert rounded-sm">
+                        <p className="cert-header">CERTIFICATE OF</p>
+                        <h3 className="cert-main-title">ADOPTION</h3>
+                        
+                        <div className="mb-10 text-sm font-serif italic text-gray-700">
+                            This certifies that <div className="cert-line min-w-[180px]"><span className="cert-handwriting">FrogLogic</span></div>
                         </div>
-                        <p className="mt-8 px-4 text-[10px] text-gray-500 italic">I promise to give them the lifetime of love and care they deserve.</p>
-                        <div className="mt-10 flex justify-between px-4 border-t border-gray-200 pt-4">
-                            <div className="text-left"><span className="cert-script text-lg border-none">FrogLogic</span><p className="text-[8px] font-bold text-gray-400">SIGNATURE</p></div>
-                            <div className="text-right"><span className="font-bold text-gray-800 text-xs">MAY 2nd, 2007</span><p className="text-[8px] font-bold text-gray-400">DATE ISSUED</p></div>
+                        
+                        <div className="mb-12 text-sm font-serif italic text-gray-700">
+                            has officially adopted <div className="cert-line min-w-[220px]"><span className="cert-handwriting">"Derpy Vandals"</span></div>
+                        </div>
+                        
+                        <div className="cert-body-text italic">
+                            By signing this certificate, I promise to give them the lifetime of<br/>
+                            love, care, and attention that they deserve. I promise to do my<br/>
+                            best to protect them and help them live a happy and healthy life.
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-12 px-6 mt-16">
+                            <div>
+                                <span className="cert-handwriting text-xl">FrogLogic</span>
+                                <span className="cert-footer-label">SIGNATURE</span>
+                            </div>
+                            <div>
+                                <span className="cert-handwriting text-xl">May 2nd, 2007</span>
+                                <span className="cert-footer-label">DATE</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,20 +207,19 @@
             const [score, setScore] = useState(0);
             const [pos, setPos] = useState(null);
             const [active, setActive] = useState(false);
-
-            const start = () => { setScore(0); setActive(true); setPos(Math.floor(Math.random()*9)); setTimeout(() => setActive(false), 30000); };
+            const start = () => { setScore(0); setActive(true); setPos(Math.floor(Math.random()*9)); setTimeout(() => setActive(false), 20000); };
 
             return (
                 <div className="max-w-xs mx-auto animate-in zoom-in-95">
-                    <div className="flex justify-between mb-6 font-black text-green-500">
-                        <span>30s CATCH</span>
+                    <div className="flex justify-between mb-6 font-black text-green-500 text-sm">
+                        <span>FROG CATCH</span>
                         <span>SCORE: {score}</span>
                     </div>
                     <div className="glass p-4 rounded-3xl min-h-[350px] flex flex-col justify-center">
                         {!active ? (
                             <div className="text-center">
-                                {score > 0 && <p className="mb-4 text-xl">Final Score: {score}</p>}
-                                <button onClick={start} className="bg-green-500 text-black font-black px-8 py-3 rounded-full">START</button>
+                                {score > 0 && <p className="mb-4 text-xl font-black">Score: {score}</p>}
+                                <button onClick={start} className="bg-green-500 text-black font-black px-10 py-3 rounded-full shadow-[0_0_20px_rgba(34,197,94,0.3)]">START</button>
                             </div>
                         ) : (
                             <div className="frog-grid">
